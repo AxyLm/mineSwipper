@@ -7,8 +7,9 @@ import Index from "./components/index.vue"
 </script>
 
 <template>
-  <div class="text-xl	text-center">mine swipper</div>
+  <div class="text-xl	text-center">mineSwipper</div>
   <Index/>
+  <footer class="text-center mt-4 text-blue-900 no-underline"><a href="https://github.com/AxyLm/mineSwipper" target="_blank" rel="noopener noreferrer">Github</a></footer>
 </template>
 
 <style>

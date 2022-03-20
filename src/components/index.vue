@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<main class>
-			<p class="text-center">{{mines}}</p>
+			<p class="text-center">💣：{{mines}}</p>
 			<div v-for="row in gridList" class="flex flex-1 justify-center">
 				<button
 					class="block border w-10 h-10 m-px"
@@ -134,9 +134,16 @@
 
 	function openGrid(grid: Grid) {
 		if (grid.mine) {
-			alert("loast");
+			alert("You failed");
+			openAll();
 			return;
 		}
+	}
+
+	function openAll() {
+		gridList.value?.flat().forEach((e) => {
+			e.revealed = true;
+		});
 	}
 
 	function getSilder(grid: Grid) {
@@ -155,7 +162,7 @@
 	}
 
 	function autoOpen(grid: Grid) {
-		if (grid.adjacentMines) {
+		if (grid.adjacentMines || grid.mine) {
 			return;
 		}
 		getSilder(grid).forEach((e) => {
