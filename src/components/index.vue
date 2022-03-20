@@ -15,16 +15,15 @@
 					</template>
 				</button>
 			</div>
-      <div class="text-center">
-        
-			<button @click="isDev = !isDev" class="border p-1 m-1">dev</button>
-			<button @click="reset()" class="border p-1 m-1">reset</button>
-      </div>
+			<div class="text-center">
+				<button @click="isDev = !isDev" class="border p-1 m-1">dev</button>
+				<button @click="reset()" class="border p-1 m-1">reset</button>
+			</div>
 		</main>
 	</div>
 </template>
 <script setup lang="ts">
-	import { ref} from "vue";
+	import { ref } from "vue";
 	interface Grid {
 		x: number;
 		y: number;
@@ -39,7 +38,7 @@
 	const mines = ref(0);
 	const mineGenerated = ref(false);
 	const gridList = ref<Grid[][]>();
-  const isDev = ref(false)
+	const isDev = ref(false);
 	const directions = [
 		[1, 1],
 		[1, 0],
@@ -63,7 +62,7 @@
 		"text-teal-500",
 	];
 	function reset() {
-    isDev.value = false
+		isDev.value = false;
 		mines.value = 0;
 		mineGenerated.value = false;
 		gridList.value = Array.from({ length: WIDTH }, (_, x) =>
@@ -167,5 +166,5 @@
 		});
 	}
 
-  reset()
+	reset();
 </script>
