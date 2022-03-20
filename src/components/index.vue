@@ -3,19 +3,28 @@
 		<main class>
 			<p class="text-center">{{mines}}</p>
 			<div v-for="row in gridList" class="flex flex-1 justify-center">
-				<button class="block border w-10 h-10 m-px" :class="getBlockClass(grid)" v-for="grid in row" @click="onClick(grid)">
-					<template v-if="grid.revealed">
+				<button
+					class="block border w-10 h-10 m-px"
+					:class="getBlockClass(grid)"
+					v-for="grid in row"
+					@click="onClick(grid)"
+				>
+					<template v-if="grid.revealed || isDev">
 						<template v-if="grid.mine">💣</template>
-						<span v-else >{{grid.adjacentMines || ""}}</span>
+						<span v-else>{{grid.adjacentMines || ""}}</span>
 					</template>
-					<template v-else></template>
 				</button>
 			</div>
+      <div class="text-center">
+        
+			<button @click="isDev = !isDev" class="border p-1 m-1">dev</button>
+			<button @click="reset()" class="border p-1 m-1">reset</button>
+      </div>
 		</main>
 	</div>
 </template>
 <script setup lang="ts">
-	import { ref } from "vue";
+	import { ref} from "vue";
 	interface Grid {
 		x: number;
 		y: number;
@@ -29,6 +38,8 @@
 	const HEIGHT = 10;
 	const mines = ref(0);
 	const mineGenerated = ref(false);
+	const gridList = ref<Grid[][]>();
+  const isDev = ref(false)
 	const directions = [
 		[1, 1],
 		[1, 0],
@@ -51,7 +62,22 @@
 		"text-pink-500",
 		"text-teal-500",
 	];
-
+	function reset() {
+    isDev.value = false
+		mines.value = 0;
+		mineGenerated.value = false;
+		gridList.value = Array.from({ length: WIDTH }, (_, x) =>
+			Array.from(
+				{ length: HEIGHT },
+				(_, y): Grid => ({
+					x,
+					y,
+					revealed: false,
+					adjacentMines: 0,
+				})
+			)
+		);
+	}
 	function getBlockClass(block: Grid) {
 		if (block.flagged) return "bg-gray-500/10";
 		if (!block.revealed) return "bg-gray-500/10 hover:bg-gray-500/20";
@@ -63,19 +89,6 @@
 	// 	[0, -1],        [-1, -1],
 	//   [-1, 0], [-1, 1], [0, 1],
 	// ];
-	let gridList = ref<Grid[][]>(
-		Array.from({ length: WIDTH }, (_, x) =>
-			Array.from(
-				{ length: HEIGHT },
-				(_, y): Grid => ({
-					x,
-					y,
-					revealed: false,
-					adjacentMines: 0,
-				})
-			)
-		)
-	);
 	function onClick(grid: Grid) {
 		grid.revealed = true;
 		if (!mineGenerated.value) {
@@ -153,4 +166,6 @@
 			}
 		});
 	}
+
+  reset()
 </script>
